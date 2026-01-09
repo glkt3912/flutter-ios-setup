@@ -1,123 +1,123 @@
 #!/bin/bash
-# Flutter iOS Setup Configuration
-# Copy this file to config.sh and customize as needed
+# Flutter iOS Setup 設定ファイル
+# このファイルをconfig.shにコピーして、必要に応じてカスタマイズしてください
 #
-# Usage:
+# 使用方法:
 #   cp config/config.example.sh config/config.sh
-#   # Edit config/config.sh with your preferences
+#   # config/config.shをお好みで編集
 #   ./setup.sh
 
 # ==============================================================================
-# Flutter SDK Settings
+# Flutter SDK 設定
 # ==============================================================================
 
-# Flutter SDK installation directory
-# Default: $HOME/development/flutter
-# Note: Use absolute path or expand $HOME
+# Flutter SDKのインストールディレクトリ
+# デフォルト: $HOME/development/flutter
+# 注意: 絶対パスを使用するか、$HOMEを展開してください
 FLUTTER_INSTALL_DIR="${HOME}/development/flutter"
 
-# Flutter channel (stable, beta, dev, master)
-# Default: stable (recommended for production)
+# Flutterチャンネル (stable, beta, dev, master)
+# デフォルト: stable（本番環境では推奨）
 FLUTTER_CHANNEL="stable"
 
 # ==============================================================================
-# Test Project Settings
+# テストプロジェクト設定
 # ==============================================================================
 
-# Directory where the test project will be created
-# Default: current directory
-# Note: Use "." for current directory or specify full path
+# テストプロジェクトを作成するディレクトリ
+# デフォルト: カレントディレクトリ
+# 注意: カレントディレクトリには"."を使用、またはフルパスを指定
 TEST_PROJECT_DIR="."
 
-# Test project name
-# Default: flutter_test_app
+# テストプロジェクト名
+# デフォルト: flutter_test_app
 TEST_PROJECT_NAME="flutter_test_app"
 
-# Organization identifier for the test project
-# Default: com.example
-# Note: Used for iOS bundle identifier (e.g., com.example.flutter_test_app)
+# テストプロジェクトの組織識別子
+# デフォルト: com.example
+# 注意: iOSのバンドル識別子に使用されます（例: com.example.flutter_test_app）
 TEST_PROJECT_ORG="com.example"
 
 # ==============================================================================
-# Installation Options
+# インストールオプション
 # ==============================================================================
 
-# Install CocoaPods (iOS dependency manager)
-# Default: true
-# Set to false if you want to install CocoaPods manually
+# CocoaPodsをインストール（iOS依存関係管理ツール）
+# デフォルト: true
+# CocoaPodsを手動でインストールする場合はfalseに設定
 INSTALL_COCOAPODS=true
 
-# Install iOS development tools (ios-deploy, libimobiledevice, etc.)
-# Default: true
-# These tools are useful for physical device deployment
+# iOS開発ツールをインストール（ios-deploy、libimobiledeviceなど）
+# デフォルト: true
+# これらのツールは実機へのデプロイに便利です
 INSTALL_IOS_TOOLS=true
 
-# Create a test Flutter project after setup
-# Default: true
-# Set to false to skip test project creation
+# セットアップ後にテストFlutterプロジェクトを作成
+# デフォルト: true
+# テストプロジェクトの作成をスキップする場合はfalseに設定
 CREATE_TEST_PROJECT=true
 
 # ==============================================================================
-# System Requirements
+# システム要件
 # ==============================================================================
 
-# Minimum required disk space in GB
-# Default: 20
-# Xcode alone requires ~12-15GB
+# 最小必要ディスクスペース（GB）
+# デフォルト: 20
+# Xcodeだけで約12-15GB必要
 MIN_DISK_SPACE_GB=20
 
-# Minimum required macOS version
-# Default: 12.0 (Monterey)
-# Flutter 3.x requires macOS 12 or higher
+# 最小必要macOSバージョン
+# デフォルト: 12.0（Monterey）
+# Flutter 3.xはmacOS 12以上が必要
 MIN_MACOS_VERSION="12.0"
 
 # ==============================================================================
-# Logging Settings
+# ログ設定
 # ==============================================================================
 
-# Log level: DEBUG, INFO, WARNING, ERROR
-# Default: INFO
-# DEBUG provides detailed information, ERROR only shows errors
+# ログレベル: DEBUG, INFO, WARNING, ERROR
+# デフォルト: INFO
+# DEBUGは詳細情報を提供、ERRORはエラーのみ表示
 LOG_LEVEL="INFO"
 
-# Number of days to keep log files
-# Default: 30
-# Old log files will be automatically deleted
+# ログファイルを保持する日数
+# デフォルト: 30
+# 古いログファイルは自動的に削除されます
 KEEP_LOGS_DAYS=30
 
 # ==============================================================================
-# Platform Support (Future Expansion)
+# プラットフォームサポート（将来の拡張）
 # ==============================================================================
 
-# Enable iOS development
-# Default: true
+# iOS開発を有効化
+# デフォルト: true
 ENABLE_IOS=true
 
-# Enable Android development
-# Default: false
-# Note: Android support is not implemented yet
+# Android開発を有効化
+# デフォルト: false
+# 注意: Androidサポートはまだ実装されていません
 ENABLE_ANDROID=false
 
-# Enable Web development
-# Default: false
-# Note: Web support is not implemented yet
+# Web開発を有効化
+# デフォルト: false
+# 注意: Webサポートはまだ実装されていません
 ENABLE_WEB=false
 
 # ==============================================================================
-# Advanced Options
+# 高度なオプション
 # ==============================================================================
 
-# Skip already completed steps (resume capability)
-# Default: true
-# Set to false to force re-execution of all steps
+# 既に完了したステップをスキップ（再開機能）
+# デフォルト: true
+# すべてのステップを強制的に再実行する場合はfalseに設定
 SKIP_COMPLETED_STEPS=true
 
-# Perform system checks before installation
-# Default: true
-# Set to false to skip system requirements check (not recommended)
+# インストール前にシステムチェックを実行
+# デフォルト: true
+# システム要件チェックをスキップする場合はfalseに設定（非推奨）
 PERFORM_SYSTEM_CHECKS=true
 
-# Auto-accept prompts (non-interactive mode)
-# Default: false
-# Set to true for CI/CD environments (use with caution)
+# プロンプトを自動承認（非対話モード）
+# デフォルト: false
+# CI/CD環境用にtrueに設定（注意して使用）
 AUTO_ACCEPT=false
