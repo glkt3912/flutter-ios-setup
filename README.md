@@ -61,6 +61,7 @@ flutter doctor -v
 - [Apple Developer設定](docs/APPLE-DEVELOPER.md) - 開発者アカウント設定
 - [トラブルシューティング](docs/TROUBLESHOOTING.md) - よくある問題と解決策
 - [Webアプリ開発者向けガイド](docs/WEB-TO-MOBILE.md) - Flutter/モバイル用語集
+- [Firebase ガイド](docs/FIREBASE-GUIDE.md) - BaaS入門（認証・DB・ストレージ）
 
 ## プロジェクト構造
 
