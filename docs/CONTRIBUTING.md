@@ -1,80 +1,80 @@
-# Contributing Guide
+# コントリビューションガイド
 
-Thank you for your interest in contributing to Flutter iOS Setup!
+Flutter iOS Setupへのコントリビューションに興味を持っていただきありがとうございます！
 
-## How to Contribute
+## コントリビューション方法
 
-### Reporting Issues
+### 問題の報告
 
-Found a bug or have a feature request? Please create an issue with:
+バグを発見したり、機能リクエストがある場合は、以下の情報を含めてIssueを作成してください：
 
-- **macOS version** and architecture (Intel/Apple Silicon)
-- **Error message** (full output)
-- **Steps to reproduce**
-- **Expected vs actual behavior**
-- **Log files** (from `logs/` directory)
+- **macOSバージョン**とアーキテクチャ（Intel/Apple Silicon）
+- **エラーメッセージ**（完全な出力）
+- **再現手順**
+- **期待される動作と実際の動作**
+- **ログファイル**（`logs/`ディレクトリから）
 
-### Suggesting Improvements
+### 改善提案
 
-We welcome suggestions for:
-- Better error messages
-- Additional checks and validations
-- Documentation improvements
-- New features
+以下のような提案を歓迎します：
+- より良いエラーメッセージ
+- 追加のチェックと検証
+- ドキュメントの改善
+- 新機能
 
-### Code Contributions
+### コードコントリビューション
 
-1. **Fork the repository**
-2. **Create a feature branch**:
+1. **リポジトリをフォーク**
+2. **フィーチャーブランチを作成**：
    ```bash
    git checkout -b feature/your-feature-name
    ```
-3. **Make your changes**
-4. **Test thoroughly** on a clean macOS installation if possible
-5. **Commit with clear messages**:
+3. **変更を加える**
+4. **徹底的にテスト**（可能であればクリーンなmacOSインストールで）
+5. **明確なメッセージでコミット**：
    ```bash
    git commit -m "feat: add XYZ feature"
    ```
-6. **Push to your fork**:
+6. **フォークにプッシュ**：
    ```bash
    git push origin feature/your-feature-name
    ```
-7. **Create a Pull Request**
+7. **Pull Requestを作成**
 
-## Development Guidelines
+## 開発ガイドライン
 
-### Code Style
+### コードスタイル
 
-- Use bash best practices (shellcheck compliant)
-- Follow existing code structure
-- Add comments for complex logic
-- Use meaningful variable names
+- Bashのベストプラクティスを使用（shellcheck準拠）
+- 既存のコード構造に従う
+- 複雑なロジックにはコメントを追加
+- 意味のある変数名を使用
 
-### Testing
+### テスト
 
-Test your changes on:
-- **Both Intel and Apple Silicon Macs** (if possible)
-- **Clean installation** (no existing Flutter/Xcode)
-- **Existing installation** (ensure resume capability works)
+以下の環境で変更をテスト：
+- **IntelとApple Silicon両方のMac**（可能であれば）
+- **クリーンインストール**（既存のFlutter/Xcodeなし）
+- **既存インストール**（再開機能が動作することを確認）
 
-### Documentation
+### ドキュメント
 
-- Update relevant docs in `docs/` directory
-- Add troubleshooting entries for new issues
-- Update README if adding features
+- `docs/`ディレクトリの関連ドキュメントを更新
+- 新しい問題のトラブルシューティングエントリを追加
+- 機能を追加する場合はREADMEを更新
 
-### Commit Message Format
+### コミットメッセージフォーマット
 
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
+[Conventional Commits](https://www.conventionalcommits.org/)に従ってください：
 
-- `feat:` - New feature
-- `fix:` - Bug fix
-- `docs:` - Documentation only
-- `refactor:` - Code refactoring
-- `test:` - Adding tests
-- `chore:` - Maintenance tasks
+- `feat:` - 新機能
+- `fix:` - バグ修正
+- `docs:` - ドキュメントのみ
+- `refactor:` - コードのリファクタリング
+- `test:` - テストの追加
+- `chore:` - メンテナンスタスク
 
-Examples:
+例：
 ```
 feat: add support for Android setup
 fix: resolve CocoaPods installation on Apple Silicon
@@ -82,33 +82,33 @@ docs: improve device connection guide
 refactor: modularize installation functions
 ```
 
-## Project Structure
+## プロジェクト構造
 
 ```
 flutter-ios-setup/
-├── setup.sh              # Main script
+├── setup.sh              # メインスクリプト
 ├── config/
-│   └── config.example.sh # Configuration template
+│   └── config.example.sh # 設定テンプレート
 ├── scripts/
-│   ├── verify.sh         # Verification script
-│   └── lib/              # Shared libraries
-│       ├── logger.sh     # Logging functions
-│       ├── utils.sh      # Utility functions
-│       └── checks.sh     # System checks
-├── docs/                 # Documentation
+│   ├── verify.sh         # 検証スクリプト
+│   └── lib/              # 共有ライブラリ
+│       ├── logger.sh     # ログ関数
+│       ├── utils.sh      # ユーティリティ関数
+│       └── checks.sh     # システムチェック
+├── docs/                 # ドキュメント
 │   ├── DEVICE-CONNECTION.md
 │   ├── APPLE-DEVELOPER.md
 │   ├── TROUBLESHOOTING.md
 │   └── CONTRIBUTING.md
-├── logs/                 # Installation logs (git ignored)
-└── state/                # State files (git ignored)
+├── logs/                 # インストールログ（git除外）
+└── state/                # 状態ファイル（git除外）
 ```
 
-## Adding New Features
+## 新機能の追加
 
-### Adding a New Installation Step
+### 新しいインストールステップの追加
 
-1. Add function to `setup.sh`:
+1. `setup.sh`に関数を追加：
    ```bash
    install_new_tool() {
        local step_name="new_tool"
@@ -120,52 +120,52 @@ flutter-ios-setup/
 
        log_step X $TOTAL_STEPS "Installing New Tool"
 
-       # Installation logic here
+       # インストールロジックをここに
 
        mark_step_completed "$step_name"
    }
    ```
 
-2. Call it in `main()` function
-3. Update `TOTAL_STEPS` constant
-4. Add check function to `scripts/lib/checks.sh`
-5. Update documentation
+2. `main()`関数で呼び出す
+3. `TOTAL_STEPS`定数を更新
+4. `scripts/lib/checks.sh`にチェック関数を追加
+5. ドキュメントを更新
 
-### Adding a New Configuration Option
+### 新しい設定オプションの追加
 
-1. Add to `config/config.example.sh`
-2. Document the option with comments
-3. Use in relevant installation functions
-4. Update README if user-facing
+1. `config/config.example.sh`に追加
+2. コメントでオプションを説明
+3. 関連するインストール関数で使用
+4. ユーザー向けの場合はREADMEを更新
 
-### Adding a New Utility Function
+### 新しいユーティリティ関数の追加
 
-Add to appropriate library:
-- **Logging**: `scripts/lib/logger.sh`
-- **System checks**: `scripts/lib/checks.sh`
-- **Utilities**: `scripts/lib/utils.sh`
+適切なライブラリに追加：
+- **ログ**: `scripts/lib/logger.sh`
+- **システムチェック**: `scripts/lib/checks.sh`
+- **ユーティリティ**: `scripts/lib/utils.sh`
 
-## Pull Request Process
+## Pull Requestプロセス
 
-1. **Description**: Clearly describe what your PR does
-2. **Testing**: Confirm you've tested the changes
-3. **Documentation**: Update docs if needed
-4. **Review**: Be responsive to feedback
-5. **Merge**: Maintainers will merge when approved
+1. **説明**: PRが何をするか明確に説明
+2. **テスト**: 変更をテストしたことを確認
+3. **ドキュメント**: 必要に応じてドキュメントを更新
+4. **レビュー**: フィードバックに迅速に対応
+5. **マージ**: 承認されたらメンテナがマージ
 
-## Questions?
+## 質問がある場合
 
-- Open an issue with the `question` label
-- Discuss in pull requests
-- Check existing issues/PRs first
+- `question`ラベルでIssueを作成
+- Pull Requestで議論
+- 既存のIssue/PRを先に確認
 
-## Code of Conduct
+## 行動規範
 
-- Be respectful and inclusive
-- Provide constructive feedback
-- Help others learn and grow
-- Focus on what's best for the project
+- 敬意を持ち、包括的に
+- 建設的なフィードバックを提供
+- 他の人が学び成長するのを助ける
+- プロジェクトにとって最善のことに焦点を当てる
 
-## License
+## ライセンス
 
-By contributing, you agree that your contributions will be licensed under the MIT License.
+コントリビューションすることで、あなたのコントリビューションがMITライセンスの下でライセンスされることに同意したことになります。

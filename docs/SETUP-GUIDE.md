@@ -1,184 +1,184 @@
-# Complete Setup Guide
+# 完全セットアップガイド
 
-Detailed guide for setting up Flutter iOS development environment on macOS.
+macOS上でFlutter iOS開発環境をセットアップする詳細ガイドです。
 
-## Overview
+## 概要
 
-This setup process will install and configure:
-- Flutter SDK (latest stable)
-- Xcode and iOS development tools
-- CocoaPods (iOS dependency manager)
-- Development tools (ios-deploy, libimobiledevice)
-- Shell environment configuration
+このセットアッププロセスでインストール・設定されるもの：
+- Flutter SDK（最新安定版）
+- Xcodeと iOS開発ツール
+- CocoaPods（iOS依存関係管理ツール）
+- 開発ツール（ios-deploy、libimobiledeviceなど）
+- シェル環境設定
 
-**Estimated time**: 1-2 hours (mostly Xcode download)
+**所要時間**: 1〜2時間（主にXcodeのダウンロード時間）
 
-## Prerequisites
+## 前提条件
 
-Before running the setup:
+セットアップを実行する前に：
 
-- **macOS 12.0+** (Monterey or later)
-- **20GB+** free disk space
-- **Stable internet** connection
-- **Administrator access** (for sudo commands)
-- **Apple ID** (free account works)
+- **macOS 12.0以降**（Monterey以降）
+- **20GB以上**の空きディスク容量
+- **安定したインターネット**接続
+- **管理者権限**（sudoコマンド用）
+- **Apple ID**（無料アカウントでOK）
 
-## Installation Steps
+## インストール手順
 
-### Step 1: Clone or Download
+### ステップ1: クローンまたはダウンロード
 
 ```bash
-# Clone the repository
-git clone <your-repo-url> flutter-ios-setup
+# リポジトリをクローン
+git clone https://github.com/glkt3912/flutter-ios-setup.git
 cd flutter-ios-setup
 
-# Or download and extract ZIP
+# またはZIPをダウンロードして解凍
 ```
 
-### Step 2: Review Configuration (Optional)
+### ステップ2: 設定の確認（オプション）
 
-The script uses default settings, but you can customize:
+スクリプトはデフォルト設定を使用しますが、カスタマイズも可能です：
 
 ```bash
-# Copy example config
+# サンプル設定をコピー
 cp config/config.example.sh config/config.sh
 
-# Edit configuration
+# 設定を編集
 nano config/config.sh
 ```
 
-**Key settings**:
-- `FLUTTER_INSTALL_DIR`: Where Flutter will be installed
-- `TEST_PROJECT_NAME`: Name for test project
-- `CREATE_TEST_PROJECT`: Whether to create test project
+**主な設定項目**:
+- `FLUTTER_INSTALL_DIR`: Flutterのインストール先
+- `TEST_PROJECT_NAME`: テストプロジェクト名
+- `CREATE_TEST_PROJECT`: テストプロジェクトを作成するか
 
-### Step 3: Run Setup Script
+### ステップ3: セットアップスクリプトを実行
 
 ```bash
 ./setup.sh
 ```
 
-The script will:
-1. Check system requirements
-2. Install/verify Homebrew
-3. Prompt for Xcode installation (if needed)
-4. Install Flutter SDK
-5. Configure your shell environment
-6. Install CocoaPods
-7. Install iOS development tools
-8. Run Flutter Doctor
-9. Create test project (if enabled)
+スクリプトが以下を実行します：
+1. システム要件のチェック
+2. Homebrewのインストール/確認
+3. Xcodeインストールのプロンプト（必要な場合）
+4. Flutter SDKのインストール
+5. シェル環境の設定
+6. CocoaPodsのインストール
+7. iOS開発ツールのインストール
+8. Flutter Doctorの実行
+9. テストプロジェクトの作成（有効な場合）
 
-### Step 4: Install Xcode
+### ステップ4: Xcodeをインストール
 
-When prompted:
+プロンプトが表示されたら：
 
-1. Script will open App Store automatically
-2. Search for "Xcode" if not redirected
-3. Click "Get" or cloud download icon
-4. Wait for download (12-15GB, 30-60 minutes)
-5. After installation, return to terminal
-6. Press Enter to continue
-7. Enter password when prompted for sudo
+1. スクリプトが自動的にApp Storeを開きます
+2. 自動で開かない場合は「Xcode」を検索
+3. 「入手」またはクラウドダウンロードアイコンをクリック
+4. ダウンロードを待つ（12〜15GB、30〜60分）
+5. インストール完了後、ターミナルに戻る
+6. Enterキーを押して続行
+7. パスワード入力を求められたら管理者パスワードを入力
 
-The script will then:
-- Accept Xcode license
-- Configure Xcode settings
-- Install additional components
+その後、スクリプトが自動的に：
+- Xcodeライセンスの承認
+- Xcode設定の構成
+- 追加コンポーネントのインストール
 
-### Step 5: Restart Terminal
+### ステップ5: ターミナルを再起動
 
-After setup completes, restart your terminal or run:
+セットアップ完了後、ターミナルを再起動するか、以下を実行：
 
 ```bash
-# For zsh (default on modern macOS)
+# zshの場合（最近のmacOSのデフォルト）
 source ~/.zshrc
 
-# For bash
+# bashの場合
 source ~/.bashrc
 ```
 
-This loads Flutter into your PATH.
+これによりFlutterがPATHに追加されます。
 
-### Step 6: Verify Installation
+### ステップ6: インストールを確認
 
 ```bash
-# Run verification script
+# 検証スクリプトを実行
 ./scripts/verify.sh
 
-# Or manually check
+# または手動で確認
 flutter doctor -v
 ```
 
-Expected output:
+期待される出力：
 ```
 [✓] Flutter (Channel stable, X.X.X)
 [✓] Xcode - develop for iOS and macOS (X.X.X)
 [✓] CocoaPods version X.X.X
 ```
 
-## Post-Installation
+## インストール後
 
-### Test in Simulator
+### シミュレータでテスト
 
-1. Open simulator:
+1. シミュレータを起動：
    ```bash
    open -a Simulator
    ```
 
-2. Run test app (if created):
+2. テストアプリを実行（作成した場合）：
    ```bash
    cd flutter_test_app
    flutter run
    ```
 
-3. App should build and launch in simulator
+3. アプリがシミュレータでビルド・起動されます
 
-### Connect Physical Device
+### 実機デバイスを接続
 
-See [DEVICE-CONNECTION.md](DEVICE-CONNECTION.md) for:
-- Enabling Developer Mode
-- Trusting your computer
-- Configuring code signing
+[DEVICE-CONNECTION.md](DEVICE-CONNECTION.md)を参照：
+- Developerモードの有効化
+- コンピュータの信頼
+- コード署名の設定
 
-### Setup Apple Developer Account
+### Apple Developerアカウントのセットアップ
 
-See [APPLE-DEVELOPER.md](APPLE-DEVELOPER.md) for:
-- Free vs paid account
-- Code signing configuration
-- TestFlight setup
+[APPLE-DEVELOPER.md](APPLE-DEVELOPER.md)を参照：
+- 無料 vs 有料アカウント
+- コード署名の設定
+- TestFlightのセットアップ
 
-## What Gets Installed
+## インストールされるもの
 
-### System Modifications
+### システムへの変更
 
-**Homebrew** (if not present):
-- Location: `/opt/homebrew` (Apple Silicon) or `/usr/local` (Intel)
-- Used for: Installing tools and dependencies
+**Homebrew**（存在しない場合）:
+- 場所: `/opt/homebrew`（Apple Silicon）または `/usr/local`（Intel）
+- 用途: ツールと依存関係のインストール
 
 **Flutter SDK**:
-- Default location: `~/development/flutter`
-- Size: ~1-2GB
-- Includes: Flutter framework, Dart SDK, iOS toolchain
+- デフォルト場所: `~/development/flutter`
+- サイズ: 約1〜2GB
+- 含まれるもの: Flutterフレームワーク、Dart SDK、iOSツールチェーン
 
 **Xcode**:
-- Location: `/Applications/Xcode.app`
-- Size: ~12-15GB
-- Includes: iOS SDK, simulators, build tools
+- 場所: `/Applications/Xcode.app`
+- サイズ: 約12〜15GB
+- 含まれるもの: iOS SDK、シミュレータ、ビルドツール
 
 **CocoaPods**:
-- iOS dependency manager
-- Installed via Homebrew
-- Used by: Flutter iOS projects
+- iOS依存関係管理ツール
+- Homebrew経由でインストール
+- Flutter iOSプロジェクトで使用
 
-**iOS Tools**:
-- `ios-deploy`: Deploy apps to physical devices
-- `libimobiledevice`: Communicate with iOS devices
-- `ideviceinstaller`: Install apps on devices
+**iOS開発ツール**:
+- `ios-deploy`: 実機へのアプリデプロイ
+- `libimobiledevice`: iOSデバイスとの通信
+- `ideviceinstaller`: デバイスへのアプリインストール
 
-### Configuration Changes
+### 設定の変更
 
-**Shell Configuration** (~/.zshrc or ~/.bashrc):
+**シェル設定**（~/.zshrcまたは~/.bashrc）:
 ```bash
 export FLUTTER_HOME="$HOME/development/flutter"
 export PATH="$FLUTTER_HOME/bin:$PATH"
@@ -188,106 +188,106 @@ export GEM_HOME="$HOME/.gem"
 export PATH="$GEM_HOME/bin:$PATH"
 ```
 
-**State Tracking**:
-- `state/setup-state.json`: Installation state for resume capability
-- `logs/setup-*.log`: Detailed installation logs
+**状態追跡**:
+- `state/setup-state.json`: 再開機能用のインストール状態
+- `logs/setup-*.log`: 詳細なインストールログ
 
-## Resume Capability
+## 再開機能
 
-If setup is interrupted, simply run `./setup.sh` again. The script will:
-- Check what's already completed
-- Skip completed steps
-- Continue from where it left off
+セットアップが中断された場合、`./setup.sh`を再実行するだけです。スクリプトは：
+- 完了済みの内容を確認
+- 完了済みステップをスキップ
+- 中断した場所から続行
 
-To force re-installation of a step, edit `state/setup-state.json` and remove the step name from `completed_steps` array.
+ステップを強制的に再実行したい場合は、`state/setup-state.json`を編集して`completed_steps`配列からステップ名を削除してください。
 
-## Customization
+## カスタマイズ
 
-### Change Flutter Installation Location
+### Flutterインストール先の変更
 
-Edit `config/config.sh`:
+`config/config.sh`を編集：
 ```bash
 FLUTTER_INSTALL_DIR="/custom/path/flutter"
 ```
 
-### Skip Test Project Creation
+### テストプロジェクト作成をスキップ
 
-Edit `config/config.sh`:
+`config/config.sh`を編集：
 ```bash
 CREATE_TEST_PROJECT=false
 ```
 
-### Disable iOS Tools
+### iOS開発ツールを無効化
 
-Edit `config/config.sh`:
+`config/config.sh`を編集：
 ```bash
 INSTALL_IOS_TOOLS=false
 ```
 
-## Troubleshooting
+## トラブルシューティング
 
-See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for solutions to common issues.
+詳しくは[TROUBLESHOOTING.md](TROUBLESHOOTING.md)を参照してください。
 
-Quick fixes:
+クイックフィックス：
 
-**Flutter not found after setup**:
+**セットアップ後にFlutterが見つからない**:
 ```bash
-source ~/.zshrc  # or ~/.bashrc
+source ~/.zshrc  # または ~/.bashrc
 flutter --version
 ```
 
-**Xcode license issue**:
+**Xcodeライセンスの問題**:
 ```bash
 sudo xcodebuild -license accept
 ```
 
-**CocoaPods issues**:
+**CocoaPodsの問題**:
 ```bash
 brew upgrade cocoapods
 pod repo update
 ```
 
-## Uninstallation
+## アンインストール
 
-To remove Flutter and related tools:
+FlutterとRelated toolsを削除するには：
 
-1. **Remove Flutter**:
+1. **Flutterを削除**:
    ```bash
    rm -rf ~/development/flutter
    ```
 
-2. **Remove from shell config**:
-   Edit `~/.zshrc` or `~/.bashrc` and remove Flutter-related lines
+2. **シェル設定から削除**:
+   `~/.zshrc`または`~/.bashrc`を編集してFlutter関連の行を削除
 
-3. **Optional - Remove Homebrew packages**:
+3. **オプション - Homebrewパッケージを削除**:
    ```bash
    brew uninstall cocoapods ios-deploy libimobiledevice ideviceinstaller
    ```
 
-4. **Optional - Remove Xcode**:
-   - Drag `/Applications/Xcode.app` to Trash
-   - Clear derived data: `rm -rf ~/Library/Developer/Xcode/DerivedData`
+4. **オプション - Xcodeを削除**:
+   - `/Applications/Xcode.app`をゴミ箱へ
+   - derived dataをクリア: `rm -rf ~/Library/Developer/Xcode/DerivedData`
 
-**Note**: This doesn't remove Homebrew itself, as it may be used by other tools.
+**注意**: Homebrewそのものは削除しません。他のツールでも使用されている可能性があるためです。
 
-## Next Steps
+## 次のステップ
 
-1. **Learn Flutter**: [flutter.dev/docs/get-started/codelab](https://flutter.dev/docs/get-started/codelab)
-2. **Connect Device**: [DEVICE-CONNECTION.md](DEVICE-CONNECTION.md)
-3. **Setup Code Signing**: [APPLE-DEVELOPER.md](APPLE-DEVELOPER.md)
-4. **Build Your App**: Start developing!
+1. **Flutterを学ぶ**: [flutter.dev/docs/get-started/codelab](https://flutter.dev/docs/get-started/codelab)
+2. **デバイスを接続**: [DEVICE-CONNECTION.md](DEVICE-CONNECTION.md)
+3. **コード署名をセットアップ**: [APPLE-DEVELOPER.md](APPLE-DEVELOPER.md)
+4. **アプリを作成**: 開発を始めましょう！
 
-## Resources
+## リソース
 
-- [Flutter Documentation](https://flutter.dev/docs)
-- [Flutter Samples](https://flutter.github.io/samples/)
-- [iOS Development](https://developer.apple.com/ios/)
-- [Xcode Documentation](https://developer.apple.com/xcode/)
+- [Flutter公式ドキュメント](https://flutter.dev/docs)
+- [Flutterサンプル](https://flutter.github.io/samples/)
+- [iOS開発](https://developer.apple.com/ios/)
+- [Xcodeドキュメント](https://developer.apple.com/xcode/)
 
-## Getting Help
+## ヘルプが必要な場合
 
-- Check [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
-- Review installation logs: `cat logs/setup-*.log`
-- Search [Flutter issues](https://github.com/flutter/flutter/issues)
-- Ask on [Stack Overflow](https://stackoverflow.com/questions/tagged/flutter)
-- Create an issue in this repository
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md)を確認
+- インストールログを確認: `cat logs/setup-*.log`
+- [Flutter issues](https://github.com/flutter/flutter/issues)を検索
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/flutter)で質問
+- このリポジトリでIssueを作成

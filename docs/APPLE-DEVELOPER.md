@@ -1,254 +1,254 @@
-# Apple Developer Account Setup
+# Apple Developerアカウント設定ガイド
 
-Guide for setting up Apple Developer accounts and code signing for iOS app development.
+iOSアプリ開発のためのApple Developerアカウント設定とコード署名のガイドです。
 
-## Account Types Overview
+## アカウントタイプの概要
 
-### Free Apple ID Account
+### 無料Apple IDアカウント
 
-**Cost**: Free
-**Best for**: Learning, personal projects, testing on your own devices
+**費用**: 無料
+**適している人**: 学習、個人プロジェクト、自分のデバイスでのテスト
 
-**Capabilities**:
-- Test apps on your own devices (up to 3 devices per type)
-- Apps expire after 7 days (must reinstall)
-- No App Store distribution
-- No TestFlight
-- Basic app services only
+**できること**:
+- 自分のデバイスでアプリをテスト（各デバイスタイプで最大3台）
+- アプリは7日で期限切れ（再インストールが必要）
+- App Storeへの配布は不可
+- TestFlightは利用不可
+- 基本的なアプリサービスのみ
 
-**Limitations**:
-- Maximum 3 devices per device type (3 iPhones, 3 iPads, etc.)
-- Must reinstall app every 7 days
-- Cannot use advanced capabilities (Push Notifications, In-App Purchase, etc.)
-- Cannot distribute to others
+**制限事項**:
+- 各デバイスタイプで最大3台（iPhone 3台、iPad 3台など）
+- 7日ごとにアプリを再インストールする必要がある
+- プッシュ通知、アプリ内課金などは使用不可
+- 他の人に配布できない
 
 ### Apple Developer Program
 
-**Cost**: $99/year (USD)
-**Best for**: App Store distribution, professional development
+**費用**: 年間$99（米ドル）
+**適している人**: App Store配布、プロフェッショナル開発
 
-**Capabilities**:
-- Unlimited device testing
-- No app expiration
-- App Store distribution
-- TestFlight (up to 10,000 beta testers)
-- All app capabilities and services
-- App Analytics
-- Beta OS access
+**できること**:
+- 無制限のデバイステスト
+- アプリの期限切れなし
+- App Storeへの配布
+- TestFlight（最大10,000人のベータテスター）
+- すべてのアプリ機能とサービス
+- アプリアナリティクス
+- ベータ版OSへのアクセス
 
-**Required for**:
-- Publishing to App Store
-- Advanced app capabilities
-- Long-term development
+**必要な場面**:
+- App Storeへの公開
+- 高度なアプリ機能の使用
+- 長期的な開発
 
 ### Apple Developer Enterprise Program
 
-**Cost**: $299/year (USD)
-**Best for**: Internal company app distribution (NOT for App Store)
+**費用**: 年間$299（米ドル）
+**適している人**: 社内アプリ配布のみ（App Storeには出せない）
 
-**Note**: Only for distributing apps within your organization. Cannot publish to public App Store.
+**注意**: 組織内でのアプリ配布専用です。一般向けApp Storeには公開できません。
 
-## Getting Started with Free Account
+## 無料アカウントで始める
 
-### 1. Add Apple ID to Xcode
+### 1. XcodeにApple IDを追加
 
-1. Open **Xcode**
-2. Go to **Settings** (or **Preferences** in older versions)
-3. Click **Accounts** tab
-4. Click the **+** button at the bottom left
-5. Select **Apple ID**
-6. Sign in with your Apple ID
-7. Click **Next**
+1. **Xcode**を開く
+2. **Settings**（または古いバージョンでは**Preferences**）へ
+3. **Accounts**タブをクリック
+4. 左下の**+**ボタンをクリック
+5. **Apple ID**を選択
+6. Apple IDでサインイン
+7. **次へ**をクリック
 
-Your account will appear in the list.
+アカウントがリストに表示されます。
 
-### 2. Configure Code Signing (Free Account)
+### 2. コード署名を設定（無料アカウント）
 
-1. Open your Flutter project in Xcode:
+1. Flutter プロジェクトをXcodeで開く:
    ```bash
    cd your_flutter_project
    open ios/Runner.xcworkspace
    ```
 
-2. In the project navigator (left sidebar), click **Runner**
+2. プロジェクトナビゲータ（左サイドバー）で**Runner**をクリック
 
-3. Select the **Runner** target (under TARGETS)
+3. **Runner**ターゲット（TARGETSの下）を選択
 
-4. Go to **Signing & Capabilities** tab
+4. **Signing & Capabilities**タブへ
 
-5. Under **Signing**, check **"Automatically manage signing"**
+5. **Signing**の下で**"Automatically manage signing"**にチェック
 
-6. Select your **Team** (your Apple ID)
+6. **Team**で自分のApple IDを選択
 
-7. Xcode will automatically:
-   - Create a development certificate
-   - Generate a provisioning profile
-   - Configure the bundle identifier
+7. Xcodeが自動的に以下を行います:
+   - 開発証明書の作成
+   - プロビジョニングプロファイルの生成
+   - Bundle Identifierの設定
 
-**Important**: The bundle identifier will be modified to include your team ID.
-Example: `com.example.app` becomes `com.example.app.TEAM123`
+**重要**: Bundle Identifierにはチーム IDが追加されます。
+例: `com.example.app` → `com.example.app.TEAM123`
 
-### 3. Run on Device
+### 3. デバイスで実行
 
 ```bash
 flutter run
 ```
 
-or in Xcode: Product > Run (Cmd+R)
+またはXcodeで: Product > Run（Cmd+R）
 
-**First run**: Xcode may prompt you to register your device. Click **Register** and wait for the process to complete.
+**初回実行時**: Xcodeがデバイスの登録を求める場合があります。**登録**をクリックして完了を待ってください。
 
-## Upgrading to Paid Developer Program
+## 有料Developer Programへのアップグレード
 
-### Benefits
+### メリット
 
-- No 7-day expiration
-- Unlimited devices
-- App Store distribution
-- TestFlight beta testing
-- Push notifications, In-App Purchases, etc.
+- 7日の期限切れなし
+- 無制限のデバイス
+- App Store配布
+- TestFlightベータテスト
+- プッシュ通知、アプリ内課金など
 
-### Enrollment Process
+### 登録プロセス
 
-1. Go to [developer.apple.com/programs/enroll](https://developer.apple.com/programs/enroll/)
-2. Click **Start Your Enrollment**
-3. Sign in with your Apple ID
-4. Review the Apple Developer Agreement
-5. Select entity type (Individual or Organization)
-6. Complete personal/company information
-7. Purchase membership ($99/year)
+1. [developer.apple.com/programs/enroll](https://developer.apple.com/programs/enroll/)へ
+2. **Start Your Enrollment**をクリック
+3. Apple IDでサインイン
+4. Apple Developer Agreementを確認
+5. エンティティタイプを選択（個人または組織）
+6. 個人/会社情報を入力
+7. メンバーシップを購入（$99/年）
 
-**Processing time**: Usually instant, but can take up to 48 hours for verification.
+**処理時間**: 通常は即時ですが、確認に最大48時間かかる場合があります。
 
-### After Enrollment
+### 登録後
 
-1. In Xcode, go to **Settings** > **Accounts**
-2. Select your Apple ID
-3. Click **Download Manual Profiles**
-4. Your account type will update to show "Apple Developer Program"
+1. Xcodeで**Settings** > **Accounts**へ
+2. Apple IDを選択
+3. **Download Manual Profiles**をクリック
+4. アカウントタイプが「Apple Developer Program」に更新されます
 
-## Code Signing Concepts
+## コード署名の概念
 
-### What is Code Signing?
+### コード署名とは？
 
-Code signing proves that:
-1. The app comes from a known developer (you)
-2. The app hasn't been modified since signing
-3. The app is allowed to run on specific devices
+コード署名は以下を証明します：
+1. アプリが既知の開発者（あなた）からのものであること
+2. 署名後にアプリが変更されていないこと
+3. アプリが特定のデバイスで実行できること
 
-### Signing Components
+### 署名の構成要素
 
-**Development Certificate**:
-- Identifies you as a developer
-- Stored in Keychain
-- Used to sign apps during development
+**開発証明書**:
+- あなたを開発者として識別
+- Keychainに保存
+- 開発中のアプリ署名に使用
 
-**Provisioning Profile**:
-- Links your certificate, App ID, and devices
-- Allows app to run on specific devices
-- Different profiles for development, distribution, etc.
+**プロビジョニングプロファイル**:
+- 証明書、App ID、デバイスをリンク
+- 特定のデバイスでアプリの実行を許可
+- 開発用、配布用などで異なるプロファイル
 
 **Bundle Identifier**:
-- Unique identifier for your app
-- Format: `com.company.appname`
-- Must be unique across App Store
+- アプリの一意の識別子
+- 形式: `com.company.appname`
+- App Store全体で一意である必要がある
 
-### Automatic vs Manual Signing
+### 自動 vs 手動署名
 
-**Automatic Signing** (Recommended for beginners):
-- Xcode manages certificates and profiles
-- Handles renewals automatically
-- Simplest approach
+**自動署名**（初心者におすすめ）:
+- Xcodeが証明書とプロファイルを管理
+- 更新を自動処理
+- 最もシンプルなアプローチ
 
-**Manual Signing** (Advanced):
-- You manage certificates and profiles
-- More control
-- Required for complex setups (CI/CD, multiple teams)
+**手動署名**（上級者向け）:
+- 自分で証明書とプロファイルを管理
+- より細かい制御が可能
+- 複雑なセットアップ（CI/CD、複数チームなど）で必要
 
-## Common Code Signing Issues
+## よくあるコード署名の問題
 
-### "Failed to register bundle identifier"
+### 「Bundle identifierの登録に失敗しました」
 
-**Problem**: Bundle ID is already taken or invalid.
+**問題**: Bundle IDが既に使用されているか、無効です。
 
-**Solution**:
-1. Change bundle identifier in Xcode:
-   - Runner target > General > Bundle Identifier
-2. Use reverse domain notation: `com.yourname.appname`
-3. Make it unique (add numbers if needed): `com.yourname.myapp2`
+**解決策**:
+1. Xcodeで Bundle Identifierを変更:
+   - Runnerターゲット > General > Bundle Identifier
+2. 逆ドメイン表記を使用: `com.yourname.appname`
+3. 一意にする（必要に応じて数字を追加）: `com.yourname.myapp2`
 
-### "No signing certificate found"
+### 「署名証明書が見つかりません」
 
-**Problem**: No valid certificate in Keychain.
+**問題**: Keychainに有効な証明書がありません。
 
-**Solution**:
-1. Enable "Automatically manage signing"
-2. Select your team
-3. Xcode will create certificate automatically
+**解決策**:
+1. 「Automatically manage signing」を有効化
+2. チームを選択
+3. Xcodeが自動的に証明書を作成
 
-If that fails:
+それでもダメな場合:
 1. Xcode > Settings > Accounts
-2. Select your Apple ID
-3. Click "Manage Certificates"
-4. Click "+" > "Apple Development"
+2. Apple IDを選択
+3. 「Manage Certificates」をクリック
+4. 「+」 > 「Apple Development」をクリック
 
-### "Provisioning profile doesn't match"
+### 「プロビジョニングプロファイルが一致しません」
 
-**Solution**:
-1. Clean build folder: Product > Clean Build Folder (Cmd+Shift+K)
-2. Delete derived data:
+**解決策**:
+1. ビルドフォルダをクリーン: Product > Clean Build Folder（Cmd+Shift+K）
+2. Derived Dataを削除:
    ```bash
    rm -rf ~/Library/Developer/Xcode/DerivedData
    ```
-3. Rebuild project
+3. プロジェクトを再ビルド
 
-### "Maximum number of certificates generated"
+### 「証明書の生成数が上限に達しました」
 
-**Problem**: You've created too many certificates (limit varies by account type).
+**問題**: 作成した証明書が多すぎます（アカウントタイプごとに上限あり）。
 
-**Solution**:
-1. Go to [developer.apple.com/account/resources/certificates](https://developer.apple.com/account/resources/certificates)
-2. Revoke old/unused certificates
-3. Create new certificate in Xcode
+**解決策**:
+1. [developer.apple.com/account/resources/certificates](https://developer.apple.com/account/resources/certificates)へ
+2. 古い/未使用の証明書を取り消す
+3. Xcodeで新しい証明書を作成
 
-## TestFlight (Paid Account Only)
+## TestFlight（有料アカウントのみ）
 
-TestFlight allows you to distribute beta versions to testers.
+TestFlightを使用すると、ベータ版をテスターに配布できます。
 
-### Setup
+### セットアップ
 
-1. Archive your app in Xcode:
+1. Xcodeでアプリをアーカイブ:
    - Product > Archive
-2. Click "Distribute App"
-3. Select "TestFlight & App Store"
-4. Follow the prompts
-5. Upload to App Store Connect
+2. 「Distribute App」をクリック
+3. 「TestFlight & App Store」を選択
+4. プロンプトに従う
+5. App Store Connectにアップロード
 
-### Inviting Testers
+### テスターの招待
 
-1. Go to [appstoreconnect.apple.com](https://appstoreconnect.apple.com)
-2. Select your app
-3. Go to TestFlight tab
-4. Add internal testers (your team, up to 100)
-5. Add external testers (public, up to 10,000)
+1. [appstoreconnect.apple.com](https://appstoreconnect.apple.com)へ
+2. アプリを選択
+3. TestFlightタブへ
+4. 内部テスターを追加（チーム、最大100人）
+5. 外部テスターを追加（一般、最大10,000人）
 
-## Best Practices
+## ベストプラクティス
 
-1. **Start with free account** - Learn and test before paying
-2. **Use automatic signing** - Unless you have specific needs
-3. **Keep bundle ID consistent** - Don't change it after App Store submission
-4. **Backup certificates** - Export from Keychain (File > Export Items)
-5. **Use unique bundle IDs** - Follow reverse domain notation
+1. **無料アカウントから始める** - 支払う前に学習とテスト
+2. **自動署名を使用** - 特定のニーズがない限り
+3. **Bundle IDを一貫させる** - App Store提出後は変更しない
+4. **証明書をバックアップ** - Keychainからエクスポート（ファイル > 項目をエクスポート）
+5. **一意のBundle IDを使用** - 逆ドメイン表記に従う
 
-## Resources
+## リソース
 
 - [Apple Developer Portal](https://developer.apple.com)
 - [App Store Connect](https://appstoreconnect.apple.com)
-- [Code Signing Guide](https://developer.apple.com/support/code-signing/)
-- [TestFlight Documentation](https://developer.apple.com/testflight/)
+- [コード署名ガイド](https://developer.apple.com/support/code-signing/)
+- [TestFlightドキュメント](https://developer.apple.com/testflight/)
 
-## Next Steps
+## 次のステップ
 
-- Connect your iOS device: [DEVICE-CONNECTION.md](DEVICE-CONNECTION.md)
-- Deploy your first app to device
-- Learn about App Store submission process
+- iOSデバイスを接続: [DEVICE-CONNECTION.md](DEVICE-CONNECTION.md)
+- 初めてのアプリをデバイスにデプロイ
+- App Store提出プロセスについて学ぶ
