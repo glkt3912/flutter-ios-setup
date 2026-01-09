@@ -1,0 +1,29 @@
+# Personal configuration
+config/config.sh
+
+# Logs
+logs/*
+!logs/.gitkeep
+
+# State files
+state/*
+!state/.gitkeep
+
+# macOS
+.DS_Store
+._*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+
+# Test projects (if created in this directory)
+flutter_test_app/
