@@ -6,6 +6,7 @@ Webアプリ開発の経験があるエンジニア向けに、Flutter及びモ�
 
 - [開発環境](#開発環境)
 - [言語とフレームワーク](#言語とフレームワーク)
+- [アーキテクチャとバックエンド](#アーキテクチャとバックエンド)
 - [UI/UXの概念](#uiuxの概念)
 - [ビルドとデプロイ](#ビルドとデプロイ)
 - [コード署名とセキュリティ](#コード署名とセキュリティ)
@@ -181,6 +182,359 @@ class _CounterState extends State<Counter> {
 - 新しいファイルの追加
 - const値の変更
 - ネイティブコードの変更
+
+---
+
+## アーキテクチャとバックエンド
+
+### Flutterはクライアントサイドのみ
+
+**重要**: Flutter自体は**クライアントサイドのフレームワーク**であり、サーバーサイド処理は含まれません。
+
+```
+┌─────────────────────┐
+│   Flutterアプリ      │  ← クライアント（モバイル/Web/デスクトップ）
+│    (Dart言語)       │     UIとビジネスロジック
+└──────────┬──────────┘
+           │ HTTP/WebSocket/gRPC
+           │
+┌──────────▼──────────┐
+│  バックエンドAPI     │  ← サーバーサイド（必要に応じて別途構築）
+│ (Node.js/Go/Python等)│     データ処理、認証、ビジネスロジック
+└─────────────────────┘
+```
+
+### Web開発との違い
+
+**フルスタックWebフレームワーク（Next.js/Nuxt等）**:
+```javascript
+// pages/api/users.js - サーバーサイドで実行
+export default async function handler(req, res) {
+  const users = await db.users.findAll();
+  res.json(users);
+}
+
+// pages/index.js - クライアントサイド
+export async function getServerSideProps() {
+  // サーバーサイドで実行
+  const data = await fetchFromDB();
+  return { props: { data } };
+}
+```
+→ **同じプロジェクト・言語でクライアント・サーバー両方を扱える**
+
+**Flutter**:
+```dart
+// lib/main.dart - クライアントサイドのみ
+Future<List<User>> fetchUsers() async {
+  // HTTPリクエストでAPIを呼び出す
+  final response = await http.get(
+    Uri.parse('https://api.example.com/users')
+  );
+
+  if (response.statusCode == 200) {
+    final List data = jsonDecode(response.body);
+    return data.map((json) => User.fromJson(json)).toList();
+  } else {
+    throw Exception('Failed to load users');
+  }
+}
+```
+→ **Flutterはクライアントのみ、APIは別途構築が必要**
+
+### バックエンドAPIの構築
+
+Flutterアプリで本格的な機能を実装する場合、バックエンドAPIが必要です。
+
+**一般的な技術スタック**:
+
+| 言語 | フレームワーク | 特徴 |
+|------|---------------|------|
+| Node.js | Express, Fastify, NestJS | JavaScript/TypeScript、高速開発 |
+| Go | Gin, Echo, Fiber | 高パフォーマンス、並行処理 |
+| Python | FastAPI, Django, Flask | AI/ML統合、豊富なライブラリ |
+| Ruby | Ruby on Rails | 高速プロトタイピング |
+| Java | Spring Boot | エンタープライズ、型安全 |
+| Rust | Actix, Rocket | 最高レベルのパフォーマンス |
+
+**REST API例（Node.js + Express）**:
+```javascript
+// server.js
+const express = require('express');
+const app = express();
+
+app.get('/api/users', async (req, res) => {
+  const users = await db.users.findAll();
+  res.json(users);
+});
+
+app.post('/api/users', async (req, res) => {
+  const user = await db.users.create(req.body);
+  res.json(user);
+});
+
+app.listen(3000);
+```
+
+**Flutter側（クライアント）**:
+```dart
+// lib/services/api_service.dart
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class ApiService {
+  static const baseUrl = 'https://api.example.com';
+
+  // GET リクエスト
+  Future<List<User>> getUsers() async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/users'),
+    );
+
+    if (response.statusCode == 200) {
+      final List data = jsonDecode(response.body);
+      return data.map((json) => User.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load users');
+    }
+  }
+
+  // POST リクエスト
+  Future<User> createUser(String name, String email) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/users'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'name': name,
+        'email': email,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to create user');
+    }
+  }
+}
+```
+
+### BaaS（Backend as a Service）を使う
+
+バックエンドを自分で構築せず、マネージドサービスを利用する選択肢もあります。
+
+**Firebase（最も人気）**:
+```yaml
+# pubspec.yaml
+dependencies:
+  firebase_core: ^2.0.0
+  firebase_auth: ^4.0.0        # 認証
+  cloud_firestore: ^4.0.0      # NoSQLデータベース
+  firebase_storage: ^11.0.0    # ファイルストレージ
+  firebase_messaging: ^14.0.0  # Push通知
+```
+
+```dart
+// Firebase を使ったデータ操作（バックエンドコード不要）
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final db = FirebaseFirestore.instance;
+
+// データ追加
+Future<void> addUser(String name, String email) async {
+  await db.collection('users').add({
+    'name': name,
+    'email': email,
+    'createdAt': FieldValue.serverTimestamp(),
+  });
+}
+
+// データ取得
+Future<List<User>> getUsers() async {
+  final snapshot = await db.collection('users').get();
+  return snapshot.docs
+    .map((doc) => User.fromFirestore(doc))
+    .toList();
+}
+
+// リアルタイムリスナー
+Stream<List<User>> usersStream() {
+  return db.collection('users').snapshots().map(
+    (snapshot) => snapshot.docs
+      .map((doc) => User.fromFirestore(doc))
+      .toList()
+  );
+}
+
+// ユーザー認証
+import 'package:firebase_auth/firebase_auth.dart';
+
+Future<UserCredential> signUp(String email, String password) async {
+  return await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    email: email,
+    password: password,
+  );
+}
+```
+
+**その他のBaaSサービス**:
+- **Supabase**: オープンソース、PostgreSQL、リアルタイム同期
+- **AWS Amplify**: AWS統合、GraphQL、認証
+- **Appwrite**: セルフホスト可能、オープンソース
+- **Back4App**: Parse Server、使いやすいUI
+
+### バックエンドが不要なケース
+
+以下のケースでは、バックエンドAPI不要でFlutterアプリを構築できます。
+
+**1. ローカルストレージのみ使用**
+
+```dart
+// SQLiteを使った永続化
+import 'package:sqflite/sqflite.dart';
+
+final database = await openDatabase(
+  'my_database.db',
+  version: 1,
+  onCreate: (db, version) {
+    return db.execute(
+      'CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT, email TEXT)',
+    );
+  },
+);
+
+// データ挿入
+await database.insert('users', {
+  'name': 'John',
+  'email': 'john@example.com',
+});
+
+// データ取得
+final List<Map<String, dynamic>> users = await database.query('users');
+```
+
+```dart
+// 簡易的な設定値の保存
+import 'package:shared_preferences/shared_preferences.dart';
+
+final prefs = await SharedPreferences.getInstance();
+await prefs.setString('username', 'John');
+final username = prefs.getString('username');
+```
+
+**2. 公開APIを使用**
+
+```dart
+// 天気予報API（OpenWeatherMap）
+Future<Weather> fetchWeather(String city) async {
+  final apiKey = 'YOUR_API_KEY';
+  final response = await http.get(
+    Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey')
+  );
+  return Weather.fromJson(jsonDecode(response.body));
+}
+
+// ニュースAPI
+Future<List<Article>> fetchNews() async {
+  final response = await http.get(
+    Uri.parse('https://newsapi.org/v2/top-headlines?country=jp&apiKey=YOUR_KEY')
+  );
+  final data = jsonDecode(response.body);
+  return (data['articles'] as List)
+    .map((json) => Article.fromJson(json))
+    .toList();
+}
+```
+
+**3. 静的コンテンツのみ（オフラインアプリ）**
+
+- 電卓アプリ
+- ToDoアプリ（ローカルのみ）
+- 辞書アプリ（データをアプリに同梱）
+- ゲーム（オンライン要素なし）
+
+### API通信パッケージ
+
+**基本的なHTTP通信**:
+```yaml
+dependencies:
+  http: ^1.0.0
+```
+
+**高機能なHTTPクライアント（Dio）**:
+```yaml
+dependencies:
+  dio: ^5.0.0
+```
+
+```dart
+import 'package:dio/dio.dart';
+
+final dio = Dio(BaseOptions(
+  baseUrl: 'https://api.example.com',
+  connectTimeout: Duration(seconds: 5),
+  receiveTimeout: Duration(seconds: 3),
+));
+
+// インターセプター（ログ、認証トークン追加など）
+dio.interceptors.add(InterceptorsWrapper(
+  onRequest: (options, handler) {
+    options.headers['Authorization'] = 'Bearer $token';
+    return handler.next(options);
+  },
+  onError: (error, handler) {
+    print('Error: ${error.message}');
+    return handler.next(error);
+  },
+));
+
+// リクエスト
+final response = await dio.get('/users');
+final users = (response.data as List).map((e) => User.fromJson(e)).toList();
+```
+
+**GraphQL**:
+```yaml
+dependencies:
+  graphql_flutter: ^5.0.0
+```
+
+```dart
+import 'package:graphql_flutter/graphql_flutter.dart';
+
+final httpLink = HttpLink('https://api.example.com/graphql');
+final client = GraphQLClient(
+  link: httpLink,
+  cache: GraphQLCache(),
+);
+
+// クエリ
+const query = '''
+  query GetUsers {
+    users {
+      id
+      name
+      email
+    }
+  }
+''';
+
+final result = await client.query(QueryOptions(document: gql(query)));
+```
+
+### まとめ: アーキテクチャの選択
+
+| ケース | 推奨構成 |
+|--------|----------|
+| 学習・プロトタイプ | ローカルストレージ or Firebase |
+| 小〜中規模アプリ | Firebase or Supabase（BaaS） |
+| 大規模・エンタープライズ | 自前API（Node.js/Go/等） + データベース |
+| 既存システムと連携 | 既存APIを利用 |
+| オフラインファースト | ローカルDB + 同期機能 |
+
+**Webとの違いのまとめ**:
+- **Web（SSR）**: 同じコードベースでサーバー・クライアント両方
+- **Flutter**: クライアントのみ、サーバーは別途構築または BaaS利用
 
 ---
 
