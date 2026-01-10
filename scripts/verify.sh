@@ -10,6 +10,11 @@ source "${SCRIPT_DIR}/lib/checks.sh"
 # Initialize
 init_logger
 
+# Add Flutter to PATH if installed in default location
+if [ -d "$HOME/development/flutter" ]; then
+    export PATH="$HOME/development/flutter/bin:$PATH"
+fi
+
 log_header "Flutter iOS Development Environment Verification"
 
 # Run checks

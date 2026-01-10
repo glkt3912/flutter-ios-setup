@@ -157,6 +157,11 @@ is_step_completed() {
 mark_step_completed() {
     local step_name="$1"
 
+    # Skip if STATE_FILE is not defined (e.g., in verify.sh)
+    if [ -z "${STATE_FILE:-}" ]; then
+        return 0
+    fi
+
     if [ ! -f "$STATE_FILE" ]; then
         init_state_file
     fi
@@ -182,6 +187,11 @@ mark_step_completed() {
 save_installation_info() {
     local key="$1"
     local value="$2"
+
+    # Skip if STATE_FILE is not defined (e.g., in verify.sh)
+    if [ -z "${STATE_FILE:-}" ]; then
+        return 0
+    fi
 
     if [ ! -f "$STATE_FILE" ]; then
         init_state_file
