@@ -13,7 +13,7 @@ set -o pipefail  # Exit on pipe failure
 
 # Script metadata
 readonly SETUP_VERSION="1.0.0"
-readonly TOTAL_STEPS=11
+readonly TOTAL_STEPS=12
 
 # Get script directory (works even if called from another location)
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -389,6 +389,133 @@ create_test_project() {
     mark_step_completed "$step_name"
 }
 
+# Setup development convenience features
+setup_dev_tools() {
+    local step_name="dev_tools"
+
+    if [ "${SKIP_COMPLETED_STEPS:-true}" = "true" ] && is_step_completed "$step_name"; then
+        log_info "Skipping: Development tools (already configured)"
+        return 0
+    fi
+
+    log_step 10 $TOTAL_STEPS "Setting up Development Tools"
+
+    # 1. Code Quality Tools
+    if [ "${SETUP_CODE_QUALITY_TOOLS:-true}" = "true" ]; then
+        setup_code_quality_tools
+    fi
+
+    # 2. VSCode Settings
+    if [ "${SETUP_VSCODE_SETTINGS:-true}" = "true" ]; then
+        setup_vscode_dev_environment
+    fi
+
+    # 3. Flutter Aliases
+    if [ "${SETUP_FLUTTER_ALIASES:-true}" = "true" ]; then
+        setup_flutter_command_aliases
+    fi
+
+    # 4. Git Hooks
+    if [ "${SETUP_GIT_HOOKS:-true}" = "true" ]; then
+        setup_git_commit_hooks
+    fi
+
+    log_success "Development tools configured"
+    mark_step_completed "$step_name"
+}
+
+# Setup code quality tools (analysis_options.yaml)
+setup_code_quality_tools() {
+    log_info "Setting up Code Quality Tools..."
+
+    local template_file="${SCRIPT_DIR}/templates/analysis_options.yaml"
+
+    if [ ! -f "$template_file" ]; then
+        log_warning "Code quality template not found: $template_file"
+        return 1
+    fi
+
+    # Apply to test project if it exists
+    if [ "${CREATE_TEST_PROJECT:-true}" = "true" ]; then
+        local project_dir="${TEST_PROJECT_DIR}/${TEST_PROJECT_NAME}"
+
+        if [ -d "$project_dir" ]; then
+            local dest_file="${project_dir}/analysis_options.yaml"
+
+            if copy_template "$template_file" "$dest_file" "Enhanced analysis_options.yaml"; then
+                log_info "Run 'flutter analyze' in your project to see static analysis results"
+            fi
+        fi
+    fi
+
+    log_success "Code quality tools configured"
+}
+
+# Setup VSCode development environment
+setup_vscode_dev_environment() {
+    log_info "Setting up VSCode Development Environment..."
+
+    # Check if VSCode is installed (optional)
+    if ! check_vscode; then
+        log_info "VSCode not detected. You can install it later from: https://code.visualstudio.com/"
+        log_info "VSCode settings will still be created for future use."
+    fi
+
+    # Setup workspace for test project
+    if [ "${CREATE_TEST_PROJECT:-true}" = "true" ]; then
+        local project_dir="${TEST_PROJECT_DIR}/${TEST_PROJECT_NAME}"
+
+        if [ -d "$project_dir" ]; then
+            setup_vscode_workspace "$project_dir"
+            log_info "Open project in VSCode: code $project_dir"
+        fi
+    fi
+
+    log_success "VSCode development environment configured"
+}
+
+# Setup Flutter command aliases
+setup_flutter_command_aliases() {
+    log_info "Setting up Flutter Command Aliases..."
+
+    if add_flutter_aliases; then
+        log_info "Available aliases: fl, flr, fld, fla, flf, and more"
+        log_info "Run 'source $(get_shell_config_file)' or restart terminal to use aliases"
+    else
+        log_warning "Failed to add Flutter aliases"
+        return 1
+    fi
+
+    log_success "Flutter command aliases configured"
+}
+
+# Setup Git commit hooks
+setup_git_commit_hooks() {
+    log_info "Setting up Git Commit Hooks..."
+
+    # Install hooks for test project
+    if [ "${CREATE_TEST_PROJECT:-true}" = "true" ]; then
+        local project_dir="${TEST_PROJECT_DIR}/${TEST_PROJECT_NAME}"
+
+        if [ -d "$project_dir" ]; then
+            if install_git_hooks "$project_dir"; then
+                log_info "Pre-commit hook will auto-format code and run analysis"
+
+                if [ "${GIT_HOOKS_STRICT:-true}" = "true" ]; then
+                    log_info "Strict mode: commits will fail if analysis finds issues"
+                else
+                    log_info "Permissive mode: commits allowed even with warnings"
+                fi
+            else
+                log_warning "Failed to install git hooks"
+                return 1
+            fi
+        fi
+    fi
+
+    log_success "Git commit hooks configured"
+}
+
 # ==============================================================================
 # Main Setup Flow
 # ==============================================================================
@@ -426,6 +553,7 @@ main() {
     install_ios_tools
     run_flutter_doctor
     create_test_project
+    setup_dev_tools
 
     # Cleanup old logs
     cleanup_old_logs

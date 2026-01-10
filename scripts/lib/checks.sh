@@ -277,3 +277,54 @@ check_rosetta() {
         return 0
     fi
 }
+
+# ==============================================================================
+# Development Tools Checks
+# ==============================================================================
+
+# Check if VSCode is installed
+# Usage: check_vscode
+# Returns: 0 if installed, 1 otherwise
+check_vscode() {
+    log_info "Checking Visual Studio Code..."
+
+    if [ -d "/Applications/Visual Studio Code.app" ]; then
+        log_success "Visual Studio Code is installed"
+        return 0
+    else
+        log_info "Visual Studio Code is not installed (optional)"
+        return 1
+    fi
+}
+
+# Verify git hooks are installed in a project
+# Usage: verify_git_hooks "/path/to/project"
+# Returns: 0 if hooks exist, 1 otherwise
+verify_git_hooks() {
+    local project_dir="${1:-.}"
+    local pre_commit_hook="${project_dir}/.git/hooks/pre-commit"
+
+    if [ -f "$pre_commit_hook" ] && [ -x "$pre_commit_hook" ]; then
+        log_success "Git pre-commit hook is installed"
+        return 0
+    else
+        log_warning "Git pre-commit hook is not installed"
+        return 1
+    fi
+}
+
+# Verify analysis options exist
+# Usage: verify_analysis_options "/path/to/project"
+# Returns: 0 if exists, 1 otherwise
+verify_analysis_options() {
+    local project_dir="${1:-.}"
+    local analysis_file="${project_dir}/analysis_options.yaml"
+
+    if [ -f "$analysis_file" ]; then
+        log_success "analysis_options.yaml exists"
+        return 0
+    else
+        log_warning "analysis_options.yaml not found"
+        return 1
+    fi
+}

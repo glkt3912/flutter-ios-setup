@@ -9,6 +9,7 @@ macOS上でFlutter iOS開発環境を自動構築するスクリプト集です�
 - 詳細なログとエラーハンドリング
 - カスタマイズ可能な設定ファイル
 - Git管理対応（チームで共有可能）
+- **開発便利機能** - コード品質ツール、VSCode設定、エイリアス、Gitフックの自動セットアップ
 
 ## 必要な環境
 
@@ -40,6 +41,7 @@ cd flutter-ios-setup
 5. シェル環境の設定
 6. CocoaPodsとiOS開発ツールのインストール
 7. テストプロジェクトの作成（オプション）
+8. 開発便利機能のセットアップ（コード品質、VSCode、エイリアス、Gitフック）
 
 ### Xcodeのインストールについて
 
@@ -105,6 +107,7 @@ flutter doctor -v
 ## ドキュメント
 
 - [セットアップガイド](docs/SETUP-GUIDE.md) - 詳細な手順
+- [開発便利機能ガイド](docs/DEV-TOOLS.md) - コード品質、VSCode、エイリアス、Gitフック
 - [シミュレータ & 開発コマンドガイド](docs/SIMULATOR-GUIDE.md) - シミュレータ管理とFlutter Runコマンド
 - [実機接続](docs/DEVICE-CONNECTION.md) - iPhone/iPad接続方法
 - [Apple Developer設定](docs/APPLE-DEVELOPER.md) - 開発者アカウント設定
@@ -122,6 +125,11 @@ flutter-ios-setup/
 ├── scripts/
 │   ├── verify.sh         # 検証スクリプト
 │   └── lib/              # ユーティリティライブラリ
+├── templates/            # 開発ツールテンプレート
+│   ├── analysis_options.yaml
+│   ├── flutter_aliases.sh
+│   ├── vscode/           # VSCode設定
+│   └── hooks/            # Gitフック
 ├── docs/                 # ドキュメント
 └── logs/                 # インストールログ
 ```

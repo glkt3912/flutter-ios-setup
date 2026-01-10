@@ -121,3 +121,32 @@ PERFORM_SYSTEM_CHECKS=true
 # デフォルト: false
 # CI/CD環境用にtrueに設定（注意して使用）
 AUTO_ACCEPT=false
+
+# ==============================================================================
+# 開発便利機能設定 (Development Convenience Features)
+# ==============================================================================
+
+# コード品質ツールの設定（analysis_options.yamlのコピー）
+# デフォルト: true
+# テストプロジェクトに強化されたlint設定を適用
+SETUP_CODE_QUALITY_TOOLS=true
+
+# VSCode設定のセットアップ
+# デフォルト: true
+# ワークスペース設定、推奨拡張機能、デバッグ設定を作成
+SETUP_VSCODE_SETTINGS=true
+
+# Flutterコマンドエイリアスの追加
+# デフォルト: true
+# シェル設定ファイルに便利なエイリアスを追加
+SETUP_FLUTTER_ALIASES=true
+
+# Gitフックのインストール（pre-commit）
+# デフォルト: true
+# コード整形と静的解析を自動実行
+SETUP_GIT_HOOKS=true
+
+# Git フックの動作設定
+# デフォルト: true
+# falseの場合、フックが失敗してもコミット可能
+GIT_HOOKS_STRICT=true

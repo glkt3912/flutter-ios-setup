@@ -363,3 +363,123 @@ get_xcode_version() {
         echo "not installed"
     fi
 }
+
+# ==============================================================================
+# Development Tools Functions
+# ==============================================================================
+
+# Copy a template file to destination with backup
+# Usage: copy_template "source" "dest" "description"
+# Returns: 0 on success, 1 if skipped, 2 on error
+copy_template() {
+    local source="$1"
+    local dest="$2"
+    local description="${3:-file}"
+
+    if [ ! -f "$source" ]; then
+        log_error "Template not found: $source"
+        return 2
+    fi
+
+    # Create parent directory if needed
+    local dest_dir
+    dest_dir="$(dirname "$dest")"
+    mkdir -p "$dest_dir"
+
+    # Backup existing file
+    if [ -f "$dest" ]; then
+        if ask_user_confirmation "$description already exists. Overwrite?"; then
+            backup_file "$dest"
+        else
+            log_info "Skipped: $description"
+            return 1
+        fi
+    fi
+
+    # Copy template
+    cp "$source" "$dest"
+    log_success "Created: $description at $dest"
+    return 0
+}
+
+# Setup VSCode workspace for a project
+# Usage: setup_vscode_workspace "/path/to/project"
+# Returns: 0 on success, 1 on failure
+setup_vscode_workspace() {
+    local project_dir="$1"
+    local vscode_dir="${project_dir}/.vscode"
+
+    if [ ! -d "$project_dir" ]; then
+        log_error "Project directory not found: $project_dir"
+        return 1
+    fi
+
+    mkdir -p "$vscode_dir"
+
+    # Copy VSCode templates
+    local templates_dir="${SCRIPT_DIR}/templates/vscode"
+
+    copy_template "${templates_dir}/settings.json" "${vscode_dir}/settings.json" "VSCode settings" || true
+    copy_template "${templates_dir}/extensions.json" "${vscode_dir}/extensions.json" "VSCode extensions" || true
+    copy_template "${templates_dir}/launch.json" "${vscode_dir}/launch.json" "VSCode launch config" || true
+
+    return 0
+}
+
+# Install git hooks for a project
+# Usage: install_git_hooks "/path/to/project"
+# Returns: 0 on success, 1 on failure
+install_git_hooks() {
+    local project_dir="$1"
+    local git_dir="${project_dir}/.git"
+    local hooks_dir="${git_dir}/hooks"
+
+    if [ ! -d "$git_dir" ]; then
+        log_warning "Not a git repository: $project_dir"
+        return 1
+    fi
+
+    mkdir -p "$hooks_dir"
+
+    # Copy pre-commit hook
+    local hook_template="${SCRIPT_DIR}/templates/hooks/pre-commit"
+    local hook_dest="${hooks_dir}/pre-commit"
+
+    if copy_template "$hook_template" "$hook_dest" "Git pre-commit hook"; then
+        chmod +x "$hook_dest"
+        log_success "Git hook installed and made executable"
+        return 0
+    fi
+
+    return 1
+}
+
+# Add Flutter aliases to shell config
+# Usage: add_flutter_aliases
+# Returns: 0 on success, 1 on failure
+add_flutter_aliases() {
+    local shell_config
+    shell_config=$(get_shell_config_file)
+
+    local aliases_template="${SCRIPT_DIR}/templates/flutter_aliases.sh"
+
+    if [ ! -f "$aliases_template" ]; then
+        log_error "Aliases template not found: $aliases_template"
+        return 1
+    fi
+
+    # Check if already added
+    if grep -q "Flutter Development Aliases" "$shell_config" 2>/dev/null; then
+        log_info "Flutter aliases already configured in $shell_config"
+        return 0
+    fi
+
+    # Backup and append
+    backup_file "$shell_config"
+
+    echo "" >> "$shell_config"
+    cat "$aliases_template" >> "$shell_config"
+
+    log_success "Added Flutter aliases to $shell_config"
+    return 0
+}
