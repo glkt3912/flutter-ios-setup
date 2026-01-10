@@ -376,9 +376,14 @@ create_test_project() {
     flutter pub get
 
     log_info "Installing iOS dependencies..."
-    cd ios
-    pod install
-    cd ..
+    if [ -f "ios/Podfile" ]; then
+        cd ios
+        pod install
+        cd ..
+    else
+        log_warning "Podfile not found - will be auto-generated on first build"
+        log_info "Run 'flutter run' to automatically install iOS dependencies"
+    fi
 
     log_success "Test project created at: $project_dir"
     mark_step_completed "$step_name"
