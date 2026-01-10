@@ -53,13 +53,27 @@ backup_file() {
 # Usage: SHELL_TYPE=$(detect_shell)
 # Returns: "zsh", "bash", or "unknown"
 detect_shell() {
-    if [ -n "${ZSH_VERSION:-}" ]; then
-        echo "zsh"
-    elif [ -n "${BASH_VERSION:-}" ]; then
-        echo "bash"
-    else
-        echo "unknown"
-    fi
+    # Check user's login shell instead of script execution shell
+    local user_shell="${SHELL:-}"
+
+    case "$user_shell" in
+        */zsh)
+            echo "zsh"
+            ;;
+        */bash)
+            echo "bash"
+            ;;
+        *)
+            # Fallback to version detection
+            if [ -n "${ZSH_VERSION:-}" ]; then
+                echo "zsh"
+            elif [ -n "${BASH_VERSION:-}" ]; then
+                echo "bash"
+            else
+                echo "unknown"
+            fi
+            ;;
+    esac
 }
 
 # Get shell config file path
