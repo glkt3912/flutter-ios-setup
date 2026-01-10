@@ -105,6 +105,7 @@ flutter doctor -v
 ## ドキュメント
 
 - [セットアップガイド](docs/SETUP-GUIDE.md) - 詳細な手順
+- [シミュレータ & 開発コマンドガイド](docs/SIMULATOR-GUIDE.md) - シミュレータ管理とFlutter Runコマンド
 - [実機接続](docs/DEVICE-CONNECTION.md) - iPhone/iPad接続方法
 - [Apple Developer設定](docs/APPLE-DEVELOPER.md) - 開発者アカウント設定
 - [トラブルシューティング](docs/TROUBLESHOOTING.md) - よくある問題と解決策
