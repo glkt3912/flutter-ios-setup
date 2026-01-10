@@ -58,6 +58,31 @@ cd flutter-ios-setup
    - ターミナルに戻り、Enterキーを押してください
    - スクリプトが自動的にXcodeのセットアップを続行します
 
+4. **Xcode初回設定（ライセンス承認）**
+
+   セットアップスクリプトがXcodeのライセンス承認を試みますが、sudo権限が必要なため手動での対応が必要な場合があります。
+
+   **方法A: Xcodeアプリで承認（推奨）**
+   ```bash
+   open /Applications/Xcode.app
+   ```
+   - Xcodeが起動してライセンス画面が表示されます
+   - 「Agree」ボタンをクリック
+   - 追加コンポーネントのインストールを待つ
+   - Xcodeを閉じる
+
+   **方法B: コマンドラインで承認**
+   ```bash
+   # 1. Xcodeのパスを設定
+   sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+
+   # 2. ライセンスを承認
+   sudo xcodebuild -license accept
+
+   # 3. 初回起動セットアップ
+   sudo xcodebuild -runFirstLaunch
+   ```
+
 **ヒント:** Xcodeのダウンロード中に他の作業ができますが、スクリプトは待機状態になります。
 
 ## 設定のカスタマイズ
